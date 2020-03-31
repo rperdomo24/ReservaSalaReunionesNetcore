@@ -1,0 +1,25 @@
+﻿@using ReservaSalaReuniones.Web.ModelView.BreadCrums
+@{
+    ViewData["BreadCrums"] = new BreadCrums(new BreadCrum("Inicio", "Index", "Index"), new BreadCrum("Error"));
+    ViewData["Title"] = "Error";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Back"] = "1";
+}
+
+<section class="content">
+    <div class="error-page">
+        <h2 class="headline text-warning"></h2>
+
+        <div class="error-content">
+            <h3><i class="fas fa-exclamation-triangle text-warning"></i> ¡Uy! Página no encontrada.</h3>
+
+            <p>
+                Ha sucedido un error, para mayor información contacte al administrador.
+                Mientras tanto, puede regresar a <a href="@Url.Action("Index","Index")">la página principal</a>.
+            </p>
+
+        </div>
+        <!-- /.error-content -->
+    </div>
+    <!-- /.error-page -->
+</section>

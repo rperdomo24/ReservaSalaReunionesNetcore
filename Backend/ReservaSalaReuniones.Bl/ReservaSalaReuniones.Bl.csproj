@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ReservaSalaReuniones.Dal\ReservaSalaReuniones.Dal.csproj" />
+    <ProjectReference Include="..\ReservaSalaReuniones.En\ReservaSalaReuniones.En.csproj" />
+  </ItemGroup>
+
+</Project>

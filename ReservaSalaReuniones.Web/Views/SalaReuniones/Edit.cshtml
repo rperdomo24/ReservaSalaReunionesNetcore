@@ -1,0 +1,68 @@
+﻿@model ReservaSalaReuniones.En.SalaReuniones
+@using ReservaSalaReuniones.Web.ModelView.BreadCrums
+
+@{
+    ViewData["BreadCrums"] = new BreadCrums(new BreadCrum("Inicio", "Index", "Index"), new BreadCrum("Ver Salas Reuniones", "Index"), new BreadCrum("Modificar Sala nueva"));
+    ViewData["Title"] = "Modificar sala";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Back"] = "1";
+}
+
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Modificar sala de reuniones</h3>
+            </div>
+
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form asp-action="Edit" id="Edit" role="form" method="post">
+                <input asp-for="IdSala" hidden class="form-control" />
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label asp-for="NombreSala" class="control-label"> Nombre sala</label>
+                                <input asp-for="NombreSala" class="form-control" />
+                                <span asp-validation-for="NombreSala" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label asp-for="Descripcion" class="control-label">Descripción</label>
+                                <textarea asp-for="Descripcion" class="form-control"></textarea>
+                                <span asp-validation-for="Descripcion" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <input type="submit" value="Modificar" class="btn btn-primary" />
+                    <input type="button" value="Cancelar" onclick="Cancelar('Edit');" class="btn btn-secondary" />
+                </div>
+            </form>
+        </div>
+
+    </div>
+</section>
+
+@section Scripts
+    {
+
+
+
+    @if (ViewBag.NotificacionTipo != null && ViewBag.NotificacionMensaje != null)
+    {
+        <input type="hidden" id="NotificacionTitulo" value="@ViewBag.NotificacionTitulo">
+        <input type="hidden" id="NotificacionMensaje" value="@ViewBag.NotificacionMensaje">
+
+        <script>
+      VerAlertas($("#NotificacionTitulo").val(), $("#NotificacionMensaje").val(), "@ViewBag.NotificacionTipo");
+        </script>
+    }
+}

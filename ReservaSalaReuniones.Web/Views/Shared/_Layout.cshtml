@@ -1,0 +1,255 @@
+﻿@using ReservaSalaReuniones.Web.ModelView.BreadCrums;
+@using System.Security.Claims;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Reservar Sala | @ViewData["Title"]</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/Lib/AdminLTE3/plugins/fontawesome-free/css/all.min.css">
+
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/Lib/AdminLTE3/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+
+    <link rel="stylesheet" href="~/Lib/AdminLTE3/dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/Lib/AdminLTE3/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link href="~/lib/AdminLTE3/plugins/sweetalert2/sweetalert2.css" rel="stylesheet" />
+
+    @RenderSection("css", false)
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i> Menú</a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="@Url.Action("Index","Index")" class="brand-link">
+                <img src="~/Img/Logo.jpg" alt="" class="brand-image img-circle elevation-3"
+                     style="opacity: .8">
+                <span class="brand-text font-weight-light">Sala Reuniones</span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar user panel (optional) -->
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="info">
+
+                        @{
+                            var nombre = PrincipalExtensions.FindFirstValue(User, "Name");
+                        }
+                        @if (nombre != null)
+                        {
+                            <a href="#" class="d-block">@nombre</a>
+                        }
+
+                    </div>
+                </div>
+
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    @*@if (SingManager.IsSignedIn(User))
+                        {*@
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <!-- Add icons to the links using the .nav-icon class
+                        with font-awesome or any other icon font library -->
+
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "Reserva")" class="nav-link">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>
+                                    Calendario
+                                </p>
+                            </a>
+                        </li>
+
+                        @if (PrincipalExtensions.FindFirstValue(User, ClaimTypes.Role) == "Administrador")
+                        {
+
+                            <li class="nav-header">Manejo de Salas</li>
+                            <li class="nav-item has-treeview">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <p>
+                                        Datos de salas
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Index", "SalaReuniones")" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Ver salas</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Create", "SalaReuniones")" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Crear sala</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+
+
+                        <li class="nav-header"></li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Logout","Common")" class="nav-link">
+                                <i class="nav-icon fas fa-sign-in-alt"></i>
+                                <p>
+                                    Cerrar sesión
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0 text-dark">@ViewData["Title"]</h1>
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+
+                            @if (ViewData["BreadCrums"] != null)
+                            {
+                                BreadCrums breadCrums = (BreadCrums)ViewData["BreadCrums"];
+                                BreadCrum breadCrumLast = breadCrums.ListBreadCrums.LastOrDefault();
+
+                                @*<nav aria-label="breadcrumb">*@
+                                <ol class="breadcrumb float-sm-right">
+                                    @foreach (var breadCrum in breadCrums.ListBreadCrums)
+                                    {
+                                        bool active = false;
+
+                                        if (breadCrum.Equals(breadCrumLast) && breadCrums.ListBreadCrums.Count > 1)
+                                        {
+                                            active = true;
+                                        }
+
+                                        if (active)
+                                        {
+                                            <text>
+                                                <li class="breadcrumb-item active">@breadCrum.Name</li>
+                                            </text>
+                                        }
+                                        else
+                                        {
+                                            string url = string.Empty;
+
+                                            if (string.IsNullOrWhiteSpace(breadCrum.Controller) && breadCrum.Values == null)
+                                            {
+                                                url = Url.Action(breadCrum.Action);
+                                            }
+                                            else if (string.IsNullOrWhiteSpace(breadCrum.Controller) && breadCrum.Values != null)
+                                            {
+                                                url = Url.Action(breadCrum.Action, breadCrum.Values);
+                                            }
+                                            else if (!string.IsNullOrWhiteSpace(breadCrum.Controller) && breadCrum.Values == null)
+                                            {
+                                                url = Url.Action(breadCrum.Action, breadCrum.Controller);
+                                            }
+                                            else if (!string.IsNullOrWhiteSpace(breadCrum.Controller) && breadCrum.Values != null)
+                                            {
+                                                url = Url.Action(breadCrum.Action, breadCrum.Controller, breadCrum.Values);
+                                            }
+                                            else
+                                            {
+                                                url = "#";
+                                            }
+
+                                            <text>
+                                                <li class="breadcrumb-item"><a href="@url">@breadCrum.Name</a></li>
+                                            </text>
+                                        }
+                                    }
+                                </ol>
+                                @*</nav>*@
+                            }
+                            else
+                            {
+                                <h3 class="navbar-brand invisible" alt="">
+                                    Uned
+                                </h3>
+                            }
+                        </div><!-- /.col -->
+                    </div>
+                    @if (ViewData["Back"] != null)
+                    {
+                        if (ViewData["Back"].ToString() == "1")
+                        {
+                            <div class="row mb-2">
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn btn-block btn-outline-secondary btn-sm" onclick="history.go(-1); return false;">
+                                        <i class="fas fa-arrow-left"></i>
+                                        Regresar
+                                    </button>
+                                </div>
+                            </div><!-- /.row -->
+                        }
+                    }
+                </div><!-- /.container-fluid -->
+            </div>
+            @RenderBody()
+        </div>
+        <!-- /.content-wrapper -->
+        <footer class="main-footer">
+            <strong>Copyright &copy; @DateTime.Now.Year <a href="#"></a>.</strong>
+
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> 1.0.0
+            </div>
+        </footer>
+
+
+    </div>
+    <!-- ./wrapper -->
+    <!-- jQuery -->
+    <script src="~/Lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="~/Lib/AdminLTE3/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="~/Lib/AdminLTE3/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="~/Lib/AdminLTE3/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/Lib/AdminLTE3/dist/js/adminlte.js"></script>
+
+    <script src="~/lib/AdminLTE3/plugins/sweetalert2/sweetalert2.js"></script>
+    <script src="~/js/site.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+

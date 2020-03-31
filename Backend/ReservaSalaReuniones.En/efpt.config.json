@@ -1,0 +1,42 @@
+﻿{
+   "ContextClassName": "ReservasalareunionesdbContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "DoNotCombineNamespace": false,
+   "IdReplace": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": null,
+   "ProjectRootNamespace": "ReservaSalaReuniones.En",
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Reserva]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Rol_Usuario]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Roles]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Sala_Reuniones]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Usuario]"
+      }
+   ],
+   "UseDatabaseNames": false,
+   "UseFluentApiOnly": false,
+   "UseHandleBars": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseSpatial": false
+}

@@ -1,0 +1,179 @@
+﻿@using ReservaSalaReuniones.Web.ModelView.BreadCrums
+@model ReservaSalaReuniones.En.Reserva
+@{
+    ViewData["BreadCrums"] = new BreadCrums(new BreadCrum("Calendario Principal"));
+    ViewData["Title"] = "Inicio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label>Antes de reservar debe seleccionar una sala</label>
+                    <select id="Sala" name="Sala" class="form-control select2"></select>
+                </div>
+            </div>
+            <div class="col-md-12">
+                *Para reservar sala seleccione el dia
+                <div class="card card-primary">
+                    <div class="card-body p-0">
+                        <!-- THE CALENDAR -->
+                        <div id="calendar" style=""></div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="TituloModal">Modal Heading</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <form asp-action="Create" id="create" autocomplete="off" role="form">
+                <!-- Modal body -->
+                <div class="modal-body" id="CuerpoModal">
+                    <input asp-for="IdSala" hidden class="form-control " id="IdSala" />
+                    <input asp-for="IdReserva" hidden class="form-control " id="IdReserva" />
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label"> Fecha Inicio</label>
+                                <input asp-for="FechaInicio" type="text" class="form-control " id="FechaInicio" />
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label"> Fecha Fin</label>
+                                <input asp-for="FechaFin" type="text" class="form-control " id="FechaFin" />
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label">Descripción</label>
+                                <textarea asp-for="DescripcionReserva" class="form-control" id="Descripcion"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <input asp-for="ColorReserva" hidden class="form-control " id="ColorReserva" />
+                            <div class="form-group">
+                                <label class="control-label">Seleccione Color</label>
+                                <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
+                                    <ul class="fc-color-picker" id="color-chooser">
+                                        <li><a class="text-primary" href="#"><i class="fas fa-square"></i></a></li>
+                                        <li><a class="text-warning" href="#"><i class="fas fa-square"></i></a></li>
+                                        <li><a class="text-success" href="#"><i class="fas fa-square"></i></a></li>
+                                        <li><a class="text-danger" href="#"><i class="fas fa-square"></i></a></li>
+                                        <li><a class="text-muted" href="#"><i class="fas fa-square"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer" id="modal-footer">
+                    
+                    
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+@section css
+    {
+    <link href="~/lib/AdminLTE3/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Lib/AdminLTE3/plugins/fullcalendar/main.min.css">
+    @*<link rel="stylesheet" href="~/Lib/AdminLTE3/plugins/fullcalendar-interaction/main.css">*@
+    <link rel="stylesheet" href="~/Lib/AdminLTE3/plugins/fullcalendar-daygrid/main.min.css">
+    <link rel="stylesheet" href="~/Lib/AdminLTE3/plugins/fullcalendar-timegrid/main.min.css">
+    <link rel="stylesheet" href="~/Lib/AdminLTE3/plugins/fullcalendar-bootstrap/main.min.css">
+    <link href="~/lib/AdminLTE3/plugins/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/lib/AdminLTE3/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" rel="stylesheet" />
+}
+
+@section Scripts
+    {
+
+    <script src="~/Lib/AdminLTE3/plugins/moment/moment.min.js"></script>
+    <script src="~/Lib/AdminLTE3/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="~/Lib/AdminLTE3/plugins/fullcalendar/main.min.js"></script>
+    <script src="~/Lib/AdminLTE3/plugins/fullcalendar-daygrid/main.min.js"></script>
+    <script src="~/Lib/AdminLTE3/plugins/fullcalendar-timegrid/main.min.js"></script>
+    <script src="~/Lib/AdminLTE3/plugins/fullcalendar-interaction/main.js"></script>
+    <script src="~/Lib/AdminLTE3/plugins/fullcalendar-bootstrap/main.min.js"></script>
+    <script src="~/lib/AdminLTE3/plugins/select2/js/select2.full.min.js"></script>
+    <script src="~/js/Eventos/CargarData.js"></script>
+    <Script>
+        var Tipo = null;
+
+        @if (ViewBag.Tipe != null)
+	{
+            <text>  Tipo= @ViewBag.Tipe;  </text>
+	}
+
+        var calendarEl = document.getElementById('calendar');
+        var calendar = null;
+        $(function () {
+
+            if (!Tipo) {
+                InicializaCalendarioLimpio();
+
+            } else {
+                InicializaCalendario(Tipo);
+                 $("#IdSala").val(Tipo);
+            }
+
+            InicializarSelect('.select2');
+            ObtenerdataSelect();
+            var inicio = PaqueteDatePickerLimpio('FechaInicio');
+            var fin = PaqueteDatePickerLimpio('FechaFin');
+
+            $('select#Sala').on('change', function (evt) {
+                let valor = $('select#Sala').val();
+                if (valor > 0) {
+                    InicializaCalendario(this.value);
+                    $("#IdSala").val(this.value);
+                }
+            });
+        });
+
+        $('#color-chooser >li >a').click(function (e) {
+            e.preventDefault();
+            let color = $(this).css('color');
+            $('#ColorReserva').val(color);
+        });
+
+
+
+    </Script>
+
+
+    @if (ViewBag.NotificacionTipo != null && ViewBag.NotificacionMensaje != null)
+    {
+
+        <input type="hidden" id="NotificacionTitulo" value="@ViewBag.NotificacionTitulo">
+        <input type="hidden" id="NotificacionMensaje" value="@ViewBag.NotificacionMensaje">
+        <script>
+      VerAlertas($("#NotificacionTitulo").val(), $("#NotificacionMensaje").val(), "@ViewBag.NotificacionTipo");
+        </script>
+
+    }
+}
