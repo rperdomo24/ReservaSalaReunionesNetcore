@@ -1,6 +1,7 @@
 # Reserva sala de reuniones con Netcore 3.0
 Pasos para implementar prueba técnica
-Base de datos:
+
+### Base de datos:
 En la solución ScriptDB hay un archivo llamado script.sql, antes de iniciar la aplicación debe correr el script.
 
 ### Iniciar aplicaciones 
